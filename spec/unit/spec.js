@@ -17,4 +17,14 @@ describe "Joq"
       end
     end
   end
+
+  describe ".expects()"
+    describe "with()"
+      it "should not have errors when called with matching parameters"
+        cat.expects("pet").with(3).returns(function() {})
+        cat.pet(3);
+        Joq.errors().should.be_empty
+      end
+    end
+  end
 end
