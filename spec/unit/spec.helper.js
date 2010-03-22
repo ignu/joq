@@ -1,0 +1,1 @@
+var cat = {meow: function(){ return "meow"}};
