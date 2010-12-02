@@ -4,14 +4,14 @@ describe "Joq"
       before
         cat.stubs("meow").returns("MEOW!")
       end
-      it "should return what was stubbed"        
+      it "should return what was stubbed"
         cat.meow().should_equal "MEOW!"
       end
       describe ".reset()"
         before
           Joq.reset();
         end
-        it "should be able to remove stubs"     
+        it "should be able to remove stubs"
           cat.meow().should_equal "meow"
         end
       end
@@ -40,4 +40,24 @@ describe "Joq"
       end
     end
   end
+end
+
+describe "#mockAjax"
+  foo = 1
+
+  before
+    Joq.mockAjax("GET", "/something")
+      .returns({data:"bar"});
+
+    $.ajax({
+        method:"GET",
+        url: "/something",
+        success: function(result) { alert('boo');foo = result.data; }
+      });
+  end
+
+ it "executes success callback"
+  foo.should_equal "bar"
+ end
+
 end
