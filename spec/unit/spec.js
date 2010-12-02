@@ -43,21 +43,33 @@ describe "Joq"
 end
 
 describe "#mockAjax"
-  foo = 1
 
-  before
-    Joq.mockAjax("GET", "/something")
-      .returns({data:"bar"});
-
-    $.ajax({
-        method:"GET",
-        url: "/something",
-        success: function(result) { alert('boo');foo = result.data; }
-      });
-  end
+ foo = 1
 
  it "executes success callback"
+  Joq.mockAjax("GET", "/something")
+    .succeeds({data:"bar"});
+
+  $.ajax({
+      method:"GET",
+      url: "/something",
+      success: function(result) { foo = result.data; }
+    });
+
   foo.should_equal "bar"
+ end
+
+ it "executes failure callback"
+  Joq.mockAjax("GET", "/nothing")
+    .errors("terrible");
+
+  $.ajax({
+      method:"GET",
+      url: "/nothing",
+      error: function(fail) { foo = fail.responseText; }
+    });
+
+  foo.should_equal "terrible"
  end
 
 end
